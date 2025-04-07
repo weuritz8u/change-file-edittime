@@ -1,46 +1,42 @@
 # script written by Shadowdara
 
 # Get the folder where the script is executed
-$ordner = Get-Location
+$folder = Get-Location
 
-# Get list of files in the folder
-$files = Get-ChildItem -Path $ordner -File
+# Ask the user for a new timestamp
+$newDate = Read-Host "Enter the new date and time (Format: YYYY-MM-DD HH:MM:SS)"
+$newDate = [datetime]::ParseExact($newDate, "yyyy-MM-dd HH:mm:ss", $null)
 
-Write-Host "Change File Edit Time by Shadowdara`r`n"
+# Get all files in the folder
+$files = Get-ChildItem -Path $folder -File
 
-# Check if there are files
-if ($files.Count -eq 0) {
-    Write-Host "No files found in the folder!"
-    exit
+# Select a file to edit or enter 0 to change all files
+Write-Host "Available files in the folder:"
+$index = 1
+$files | ForEach-Object { Write-Host "$index: $($_.Name)"; $index++ }
+Write-Host "0: Change all files"
+
+$choice = Read-Host "Select a file (enter number) or 0 for all"
+
+if ($choice -eq "0") {
+    # Change all files in the folder
+    foreach ($file in $files) {
+        $file.CreationTime = $newDate
+        $file.LastWriteTime = $newDate
+        Write-Host "Updated: $($file.Name) -> $newDate"
+    }
+} else {
+    # Change a single file
+    $choiceIndex = [int]$choice - 1
+    if ($choiceIndex -ge 0 -and $choiceIndex -lt $files.Count) {
+        $file = $files[$choiceIndex]
+        $file.CreationTime = $newDate
+        $file.LastWriteTime = $newDate
+        Write-Host "Updated: $($file.Name) -> $newDate"
+    } else {
+        Write-Host "Invalid selection!"
+    }
 }
 
-# Display file list
-Write-Host "Available files:"
-for ($i = 0; $i -lt $files.Count; $i++) {
-    Write-Host "    $($i + 1): $($files[$i].Name)"
-}
-
-# Let the user choose a file
-$fileIndex = Read-Host "`r`nEnter the number of the file you want to modify"
-$fileIndex = [int]$fileIndex - 1
-
-if ($fileIndex -lt 0 -or $fileIndex -ge $files.Count) {
-    Write-Host "Invalid selection!"
-    exit
-}
-
-$selectedFile = $files[$fileIndex]
-Write-Host "`r`nSelected file: $($selectedFile.Name)"
-
-# Let the user input a new edit time
-$neuesDatum = Read-Host "Enter new date and time (Format: YYYY-MM-DD HH:MM:SS)"
-$neuesDatum = [datetime]::ParseExact($neuesDatum, "yyyy-MM-dd HH:mm:ss", $null)
-
-# Change file timestamps
-$selectedFile.CreationTime = $neuesDatum
-$selectedFile.LastWriteTime = $neuesDatum
-Write-Host "Updated: $($selectedFile.Name) -> $neuesDatum"
-
-Write-Host "File update complete!`r`n`r`nClosing!"
-
+Write-Host "Done!"
 Start-Sleep -Seconds 5
