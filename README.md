@@ -19,6 +19,6 @@ This is a file to change the edittime of a file.
 
 *LICENSE* : None
 
-***would be cool to give creadid if copy this and republish it but is not required.***
+**would be cool to give credit when you copy and republish this but is not required.**
 
 *Feel free to contribute via Issues (although Ideas) and forks / Pull Requests.*
