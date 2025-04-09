@@ -13,7 +13,7 @@ $files = Get-ChildItem -Path $folder -File
 # Select a file to edit or enter 0 to change all files
 Write-Host "Available files in the folder:"
 $index = 1
-$files | ForEach-Object { Write-Host "$index: $($_.Name)"; $index++ }
+$files | ForEach-Object { Write-Host "${index}: $($_.Name)"; $index++ }
 Write-Host "0: Change all files"
 
 $choice = Read-Host "Select a file (enter number) or 0 for all"
