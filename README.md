@@ -13,7 +13,7 @@ This is a file to change the edittime of a file.
 
 - *copy it in the folder with the files you need to change the edit time*
 
-- then run the file!
+- then run the file with `Powershell` *(rightclick -> run with Powershell)*!
 
 ## Other
 
